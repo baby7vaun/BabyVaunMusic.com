@@ -1,22 +1,50 @@
+/* --- Global Settings & Variables --- */
+:root {
+  --font-primary: 'Poppins', sans-serif;
+  --color-primary: #ff0066;
+  --color-secondary: #3399ff;
+  --color-accent: #ffd700;
+  --text-color: #ffffff;
+  --icon-bg: rgba(255, 255, 255, 0.1);
+  --icon-bg-hover: rgba(255, 255, 255, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
-  color: white;
+  font-family: var(--font-primary);
+  color: var(--text-color);
   overflow: hidden;
-  position: relative;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 50%, var(--color-primary), #ff6600, #ffcc00, #33ff99, var(--color-secondary), #9900ff);
+  background-size: 600% 600%;
+  animation: flow 20s ease infinite;
+  transition: transform 0.2s ease;
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.05), transparent 80%);
-  pointer-events: none;
-  z-index: 0;
+@keyframes flow {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 50% 0%; }
+  50% { background-position: 100% 50%; }
+  75% { background-position: 50% 100%; }
+  100% { background-position: 0% 50%; }
 }
 
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: inherit;
+  filter: blur(60px) contrast(120%);
+  transform: scale(1.1);
+  z-index: -1;
+}
+
+/* --- Tabs Navigation --- */
 .tabs {
   z-index: 10;
   position: relative;
@@ -24,52 +52,162 @@ body {
   justify-content: center;
   background: rgba(0, 0, 0, 0.6);
   padding: 15px;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .tab-button {
   background: none;
   border: none;
-  color: white;
+  color: var(--text-color);
+  font-family: var(--font-primary);
   font-size: 18px;
+  font-weight: 700;
   margin: 0 15px;
   cursor: pointer;
   padding: 10px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
 }
 
 .tab-button.active,
 .tab-button:hover {
-  border-bottom: 3px solid orange;
+  color: var(--color-accent);
+  border-bottom: 3px solid var(--color-accent);
 }
 
+/* --- Tab Content --- */
 .tab-content {
   display: none;
-  padding: 40px;
+  padding: 20px 40px;
   position: relative;
   z-index: 5;
+  text-align: center;
 }
 
 .tab-content.active {
   display: block;
+  animation: fadeIn 0.5s ease;
 }
 
-.bg-home {
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), #ff0040, #ff9900, #00ccff);
-  background-size: 200% 200%;
-  transition: background-position 0.2s ease;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 ul {
   list-style: none;
   padding: 0;
+  margin-top: 20px;
+}
+
+li {
+  padding: 8px 0;
+  font-size: 1.1em;
 }
 
 a {
-  color: #ffd700;
+  color: var(--color-accent);
   text-decoration: none;
+  font-weight: 700;
 }
-
 a:hover {
   text-decoration: underline;
+}
+
+/* --- Beats Tab Specifics --- */
+.beat-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.2);
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.notice {
+  font-size: 0.8em;
+  opacity: 0.7;
+  margin-top: 20px;
+}
+
+/* --- Links Tab Specifics --- */
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.icon {
+  font-size: 48px;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: var(--icon-bg);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.icon:hover {
+  transform: scale(1.1) translateY(-5px);
+  background: var(--icon-bg-hover);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.instagram { color: #E1306C; }
+.twitter   { color: #1DA1F2; }
+.youtube   { color: #FF0000; }
+.tiktok    { color: #000000; }
+.soundcloud{ color: #FF5500; }
+.discord   { color: #7289DA; }
+.link      { color: #FFFFFF; }
+
+/* --- Particles & Animations --- */
+#particles-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  font-size: 24px;
+  opacity: 0; /* Start hidden */
+  animation: floatUp 20s linear infinite, fadeInParticle 1s ease forwards;
+  pointer-events: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.particle.icon {
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(110vh) rotate(0deg);
+  }
+  to {
+    transform: translateY(-10vh) rotate(360deg);
+  }
+}
+
+@keyframes fadeInParticle {
+  to {
+    opacity: 0.7;
+  }
+}
+
+.pop {
+  transform: scale(1.5);
+  opacity: 0 !important;
 }
